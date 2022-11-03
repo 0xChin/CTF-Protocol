@@ -34,28 +34,13 @@ contract SmartHorrocruxTest is Test {
             spellInBytes := mload(add(spell, 32))
         }
 
-        //bytes memory kedavra = abi.encodePacked(
-        //   bytes4(bytes32(uint256(spellInBytes) - magic))
-        //);
+        uint256 expected = uint256(keccak256(bytes("kill()")));
 
-        bytes memory expected = abi.encodePacked(bytes4(keccak256("kill()")));
+        uint256 magic = uint256(spellInBytes) - expected;
 
-        uint256 result = uint256(
-            bytes32(
-                uint256(bytes32(expected)) +
-                    uint256(
-                        bytes32(
-                            abi.encodePacked(
-                                bytes4(bytes32(uint256(spellInBytes)))
-                            )
-                        )
-                    )
-            )
-        );
+        target.destroyIt("EtherKadabra", magic);
 
-        target.destroyIt("EtherKadabra", result);
-
-        assertTrue(target.alive());
+        assertTrue(!target.alive());
 
         vm.stopPrank();
     }

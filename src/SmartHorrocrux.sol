@@ -6,6 +6,7 @@ pragma solidity 0.8.17;
 /// @notice Some security researchers have recently found an eighth Horrocrux, it seems that Voldemort has link to a smart contract, can you destroy it?
 /// @custom:url https://www.ctfprotocol.com/tracks/eko2022/smart-horrocrux
 contract SmartHorrocrux {
+    event log(uint256);
     bool private invincible;
     bytes32 private constant _spell =
         0x45746865724b6164616272610000000000000000000000000000000000000000;
@@ -28,6 +29,7 @@ contract SmartHorrocrux {
         bytes memory kedavra = abi.encodePacked(
             bytes4(bytes32(uint256(spellInBytes) - magic))
         );
+
         address(this).call(kedavra);
     }
 
