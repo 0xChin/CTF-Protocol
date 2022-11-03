@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import "../src/HiddenKitty.sol";
+import "../src/attackers/HiddenKittyAttacker.sol";
 
 contract HiddenKittyTest is Test {
     House public target;
@@ -21,11 +22,7 @@ contract HiddenKittyTest is Test {
 
         vm.roll(69); // Avoiding negative overflow
 
-        target.isKittyCatHere(
-            keccak256(
-                abi.encodePacked(block.timestamp, blockhash(block.number - 69))
-            )
-        );
+        new HiddenKittyAttacker(address(target));
 
         assertTrue(target.catFound());
 

