@@ -6,7 +6,7 @@ import "../src/HiddenKitty.sol";
 import "../src/attackers/HiddenKittyAttacker.sol";
 
 contract HiddenKittyScript is Script {
-    address instanceAddress = 0x9A14cC18383A2e340BCfa8beD4c60962B4E9aB81; // Hardcoded, put your instance address plz
+    address instanceAddress = 0x43d3038d4c7DAFDB6A506Dd928D9e9979fe50DC0; // Hardcoded, put your instance address plz
     House target;
 
     function setUp() public {

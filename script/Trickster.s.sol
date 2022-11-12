@@ -6,7 +6,7 @@ import "../src/Trickster.sol";
 
 contract TricksterTest is Script {
     JackpotProxy public target;
-    address instanceAddress = 0x45595abB1382577db3e5837d87952cEb3E689A5F;
+    address instanceAddress = 0x078F5f57caeACD2e33EE2903fCf7734bC1e1Ca20;
 
     function setUp() public {
         target = JackpotProxy(payable(instanceAddress));

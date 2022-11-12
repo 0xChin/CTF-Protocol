@@ -8,7 +8,7 @@ import "../src/attackers/GoldenTicketAttacker.sol";
 contract GoldenTicketTest is Script {
     GoldenTicket public target;
     GoldenTicketAttacker public attacker;
-    address instanceAddress = 0xbe15Cd39A79b1DDd8E8deF806B32F14dF29873fc;
+    address instanceAddress = 0x97f72549791A0b96Bc35435d86e0FA908A9D1d37;
 
     function setUp() public {
         target = GoldenTicket(payable(instanceAddress));
@@ -18,10 +18,16 @@ contract GoldenTicketTest is Script {
     function run() public {
         vm.startBroadcast();
 
-        attacker = new GoldenTicketAttacker(instanceAddress, msg.sender);
+        attacker = new GoldenTicketAttacker(
+            instanceAddress,
+            0x6864dC5998c25Db320D3370A53592E44a246FFf4
+        );
         attacker.attack();
 
-        require(target.hasTicket(msg.sender), "Failed");
+        require(
+            target.hasTicket(0x6864dC5998c25Db320D3370A53592E44a246FFf4),
+            "Failed"
+        );
 
         vm.stopBroadcast();
     }
